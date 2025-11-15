@@ -1,12 +1,15 @@
-import javax.swing.JOptionPane;
-import java.text.NumberFormat;
-import java.util.Locale;
-import java.awt.event.KeyEvent;
-import java.awt.Toolkit;
-import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ListSelectionModel;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 
 
 
@@ -24,6 +27,7 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
         
         //fungsi agar saat kolom di klik data dari table pindah ke menu pengisian
         tblPengeluaranHarian.getSelectionModel().addListSelectionListener(event -> {
+                    
             if (!event.getValueIsAdjusting() && tblPengeluaranHarian.getSelectedRow() != -1) {
 
                 int row = tblPengeluaranHarian.getSelectedRow();
@@ -78,6 +82,8 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
         btnPengeluaran = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnMuatData = new javax.swing.JButton();
+        btnSimpanData = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -93,6 +99,12 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
         });
 
         jLabel3.setText("Jumlah Pengeluaran ");
+
+        txtPengeluaran.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPengeluaranKeyTyped(evt);
+            }
+        });
 
         jLabel4.setText("tanggal");
 
@@ -145,6 +157,20 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
             }
         });
 
+        btnMuatData.setText("Muat data");
+        btnMuatData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMuatDataActionPerformed(evt);
+            }
+        });
+
+        btnSimpanData.setText("Simpan data");
+        btnSimpanData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanDataActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -172,18 +198,21 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnHapus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEdit))
+                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnMuatData, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSimpanData))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(223, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -209,11 +238,14 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
                             .addComponent(tglPengeluaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPengeluaran)))
+                        .addComponent(btnPengeluaran))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHapus)
-                    .addComponent(btnEdit)))
+                    .addComponent(btnEdit)
+                    .addComponent(btnMuatData)
+                    .addComponent(btnSimpanData)))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -228,7 +260,7 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,7 +295,7 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTotalUangKeyTyped
     
     private void btnPengeluaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPengeluaranActionPerformed
-         CatatPengeluaran();
+        CatatPengeluaran();
     }//GEN-LAST:event_btnPengeluaranActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -273,6 +305,27 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         EditKolomHarian();
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnMuatDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMuatDataActionPerformed
+        MuatCsv();
+    }//GEN-LAST:event_btnMuatDataActionPerformed
+
+    private void btnSimpanDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanDataActionPerformed
+        SimpanCsv();
+    }//GEN-LAST:event_btnSimpanDataActionPerformed
+
+    private void txtPengeluaranKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPengeluaranKeyTyped
+       char c = evt.getKeyChar();
+           // Izinkan angka, backspace, dan delete
+        if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE && c != java.awt.event.KeyEvent.VK_DELETE) {
+            evt.consume(); // batalkan input
+            // Tampilkan notifikasi
+            JOptionPane.showMessageDialog(this, 
+                    "Input hanya boleh angka saja!",
+                    "Peringatan",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtPengeluaranKeyTyped
     
 //fungsi untuk memasukkan total uang yang didapatkan
     private void MasukkanUangTotal(){
@@ -280,9 +333,9 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
             String input = txtTotalUang.getText().trim();
             double nilai = Double.parseDouble(input);
 
-            lblPemasukkan.setText("Pemasukkan: " + nilai);
+            lblPemasukkan.setText("Pemasukkan: Rp. " + nilai);
 
-
+            txtTotalUang.setText("");
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Masukkan angka yang valid!");
         }
@@ -319,7 +372,9 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
             txtPengeluaran.setText("");
             txtKebutuhan.setText("");
             tglPengeluaran.setDate(null);
-
+            
+            updatePengeluaranDanSisa();
+            
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Terjadi kesalahan input!");
         }
@@ -353,6 +408,8 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
 
         // Reset form
         clearForm();
+        
+        updatePengeluaranDanSisa();
     }
     
 //fungsi mengedit kolom yang dipilih dari table pengeluaran harian
@@ -375,9 +432,122 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
 
         // Reset form dan tombol
         clearForm();
+        
+        updatePengeluaranDanSisa();
+    }
+
+//fungsi untuk mengetahui pemasukkan dan pengeluaran 
+    private void updatePengeluaranDanSisa() {
+
+        DefaultTableModel model = (DefaultTableModel) tblPengeluaranHarian.getModel();
+        double total = 0.0;
+
+        // Hitung seluruh nilai pengeluaran dari tabel
+        for (int i = 0; i < model.getRowCount(); i++) {
+            double nilai = Double.parseDouble(model.getValueAt(i, 0).toString());
+            total += nilai;
+        }
+
+        // tampilkan ke label pengeluaran
+        lblPengeluaran.setText("Pengeluaran: Rp." + total);
+
+        // Ambil pemasukan dari lblPemasukan
+        double pemasukan = 0;
+        try {
+            pemasukan = Double.parseDouble(lblPemasukkan.getText().replace("Pemasukkan: Rp.", ""));
+        } catch (Exception e) {}
+
+        // hitung sisa pemasukan
+        double sisa = pemasukan - total;
+        lblSisa.setText("Sisa bulan ini: Rp." + sisa);
     }
     
-    
+    private void SimpanCsv() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Simpan Data Pengeluaran ke CSV");
+
+        // Default nama file
+        fileChooser.setSelectedFile(new java.io.File("pengeluaran_harian.csv"));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+
+            try (FileWriter fw = new FileWriter(fileToSave);
+                 BufferedWriter bw = new BufferedWriter(fw)) {
+
+                DefaultTableModel model = (DefaultTableModel) tblPengeluaranHarian.getModel();
+
+                // Tulis header kolom
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    bw.write(model.getColumnName(i));
+                    if (i != model.getColumnCount() - 1) bw.write(",");
+                }
+                bw.newLine();
+
+                // Tulis isi data baris per baris
+                for (int row = 0; row < model.getRowCount(); row++) {
+                    for (int col = 0; col < model.getColumnCount(); col++) {
+                        Object value = model.getValueAt(row, col);
+                        bw.write(value != null ? value.toString() : "");
+                        if (col != model.getColumnCount() - 1) bw.write(",");
+                    }
+                    bw.newLine();
+                }
+
+                bw.flush();
+                JOptionPane.showMessageDialog(this, "Data berhasil disimpan ke CSV!");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, 
+                    "Gagal menyimpan file: " + e.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void MuatCsv() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Pilih File CSV");
+
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+
+                String line;
+                DefaultTableModel model = (DefaultTableModel) tblPengeluaranHarian.getModel();
+
+                // Hapus data lama di tabel
+                model.setRowCount(0);
+
+                // Ambil header dari CSV (baris pertama)
+                if ((line = br.readLine()) != null) {
+                    String[] header = line.split(",");
+                    model.setColumnIdentifiers(header);
+                }
+
+                // Isi data baris demi baris
+                while ((line = br.readLine()) != null) {
+                    String[] data = line.split(",");
+                    model.addRow(data);
+                }
+
+                JOptionPane.showMessageDialog(this, "File CSV berhasil dimuat!");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                    "Gagal memuat file: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -410,7 +580,9 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnMuatData;
     private javax.swing.JButton btnPengeluaran;
+    private javax.swing.JButton btnSimpanData;
     private javax.swing.JButton btnUangTotal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
