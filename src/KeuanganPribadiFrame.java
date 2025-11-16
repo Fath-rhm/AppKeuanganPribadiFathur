@@ -1,5 +1,4 @@
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.swing.ListSelectionModel;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,10 +6,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import java.util.Date;
-
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class KeuanganPribadiFrame extends javax.swing.JFrame {
     
@@ -256,23 +257,18 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel2))
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtTotalUang, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtPengeluaran)
-                                        .addComponent(txtKebutuhan)
-                                        .addComponent(tglPengeluaran, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)))
-                                .addGap(7, 7, 7))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnUangTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTotalUang, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tglPengeluaran, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtKebutuhan, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPengeluaran, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUangTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,16 +305,16 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtTotalUang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUangTotal)))
-                .addGap(12, 12, 12)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPengeluaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtKebutuhan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(txtKebutuhan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPengeluaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,10 +366,20 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
         btnExportCSV.setBackground(new java.awt.Color(0, 0, 0));
         btnExportCSV.setForeground(new java.awt.Color(255, 255, 255));
         btnExportCSV.setText("Simpan ke CSV");
+        btnExportCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportCSVActionPerformed(evt);
+            }
+        });
 
         btnExportTXT.setBackground(new java.awt.Color(0, 0, 0));
         btnExportTXT.setForeground(new java.awt.Color(255, 255, 255));
         btnExportTXT.setText("Simpan ke TXT");
+        btnExportTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportTXTActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -420,7 +426,7 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(200, 200, 200)
                         .addComponent(jLabel1)))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,7 +437,7 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -505,6 +511,14 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
         }
     }
     }//GEN-LAST:event_lblPemasukkanPropertyChange
+
+    private void btnExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCSVActionPerformed
+        ExportCsvBulanan();
+    }//GEN-LAST:event_btnExportCSVActionPerformed
+
+    private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTXTActionPerformed
+        ExportTxtBulanan();
+    }//GEN-LAST:event_btnExportTXTActionPerformed
     
 //fungsi untuk memasukkan total uang yang didapatkan
     private void MasukkanUangTotal() {
@@ -536,46 +550,73 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
     }
     
     private void CatatPengeluaran() {
-    try {
-        String pengeluaran = txtPengeluaran.getText().trim();
-        String kebutuhan = txtKebutuhan.getText().trim();
+        try {
+            String pengeluaran = txtPengeluaran.getText().trim();
+            String kebutuhan = txtKebutuhan.getText().trim();
 
-        if (!pengeluaran.matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "Pengeluaran harus berupa angka!");
+            if (!pengeluaran.matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "Pengeluaran harus berupa angka!");
+                return;
+            }
+
+            Date date = tglPengeluaran.getDate();
+            if (date == null) {
+                JOptionPane.showMessageDialog(this, "Pilih tanggal pengeluaran!");
+                return;
+            }
+            //Memasukkan fungsi koreksi pemasukkan/saldo
+            double pemasukan = 0;
+            try {
+                String teksPemasukkan = lblPemasukkan.getText().replaceAll("[^0-9.]", "");
+                if (!teksPemasukkan.isEmpty()) {
+                    pemasukan = Double.parseDouble(teksPemasukkan);
+                }
+            } catch (Exception e) {}
+
+            double totalPengeluaranSaatIni = 0;
+            try {
+                totalPengeluaranSaatIni = Double.parseDouble(lblPengeluaran.getText());
+            } catch (Exception e) {}
+
+            double pengeluaranBaru = Double.parseDouble(pengeluaran);
+
+            double sisaSimulasi = pemasukan - (totalPengeluaranSaatIni + pengeluaranBaru);
+
+            if (sisaSimulasi < 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Saldo anda tidak cukup!",
+                    "Gagal",
+                    JOptionPane.ERROR_MESSAGE
+                );
             return;
+            }
+            
+            //Memasukkan data ke table pengeluaran harian
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String tanggal = sdf.format(date);
+            DefaultTableModel model = (DefaultTableModel) tblPengeluaranHarian.getModel();
+            model.addRow(new Object[]{
+                pengeluaran,
+                kebutuhan,
+                tanggal,
+                lblPemasukkan.getText(),
+                "",     // kolom pengeluaran total
+                ""      // kolom sisa
+            });
+            updatePengeluaranDanSisa();
+
+            int lastRow = model.getRowCount() - 1;
+            model.setValueAt(lblPengeluaran.getText(), lastRow, 4); // kolom Pengeluaran Total
+            model.setValueAt(lblSisa.getText(), lastRow, 5);         // kolom Sisa
+
+            // Reset input
+            txtPengeluaran.setText("");
+            txtKebutuhan.setText("");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan input: " + e.getMessage());
         }
-
-        Date date = tglPengeluaran.getDate();
-        if (date == null) {
-            JOptionPane.showMessageDialog(this, "Pilih tanggal pengeluaran!");
-            return;
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String tanggal = sdf.format(date);
-        DefaultTableModel model = (DefaultTableModel) tblPengeluaranHarian.getModel();
-        model.addRow(new Object[]{
-            pengeluaran,
-            kebutuhan,
-            tanggal,
-            lblPemasukkan.getText(),
-            "",     // kolom pengeluaran total
-            ""      // kolom sisa
-        });
-        updatePengeluaranDanSisa();
-        
-        int lastRow = model.getRowCount() - 1;
-        model.setValueAt(lblPengeluaran.getText(), lastRow, 4); // kolom Pengeluaran Total
-        model.setValueAt(lblSisa.getText(), lastRow, 5);         // kolom Sisa
-
-        // Reset input
-        txtPengeluaran.setText("");
-        txtKebutuhan.setText("");
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Terjadi kesalahan input: " + e.getMessage());
     }
-}
  
 //fungsi mengosongkan menu pengisian pengeluaran harian
     private void clearForm() {
@@ -656,7 +697,6 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
         try {
         String teksLabel = lblPemasukkan.getText(); 
         String angka = teksLabel.replaceAll("[^0-9.]", "");  // hanya baca, tidak ubah label
-
         if (!angka.isEmpty()) {
             pemasukan = Double.parseDouble(angka);
         }
@@ -781,42 +821,51 @@ public class KeuanganPribadiFrame extends javax.swing.JFrame {
     }
 //fungsi untuk mengkonversi data dari tblPengeluaranHarian ke tblPengeluaranBulanan
     private void KonversiKeBulanan() {
-
         DefaultTableModel harian = (DefaultTableModel) tblPengeluaranHarian.getModel();
-        modelBulanan.setRowCount(0); // bersihkan
+        modelBulanan.setRowCount(0);
 
         java.util.Map<String, double[]> map = new java.util.HashMap<>();
 
         for (int i = 0; i < harian.getRowCount(); i++) {
-            String tanggal = harian.getValueAt(i, 2).toString();
 
+            String tanggal = harian.getValueAt(i, 2).toString();
             double pengeluaran = Double.parseDouble(harian.getValueAt(i, 0).toString());
             double pemasukan = Double.parseDouble(harian.getValueAt(i, 3).toString());
             double totalPeng = Double.parseDouble(harian.getValueAt(i, 4).toString());
             double sisa = Double.parseDouble(harian.getValueAt(i, 5).toString());
 
             if (!map.containsKey(tanggal)) {
-                map.put(tanggal, new double[]{0, 0, 0, 0});  
+                // index: 0=pengeluaran, 1=pemasukkan, 2=totalPeng, 3=sisa
+                map.put(tanggal, new double[]{0, pemasukan, totalPeng, sisa});
             }
 
-            double[] dat = map.get(tanggal);
+            double[] data = map.get(tanggal);
 
-            dat[0] += pengeluaran;
-            dat[1] += pemasukan;
-            dat[2] += totalPeng;
-            dat[3] += sisa;
+            // hanya pengeluaran yang dijumlahkan
+            data[0] += pengeluaran;
+
+            // pemasukan, totalPeng, dan sisa TIDAK dijumlahkan
+            // ambil nilai terakhir
+            data[1] = pemasukan;
+            data[2] = totalPeng;
+            data[3] = sisa;
         }
+        
+        // ----------- SORTING TANGGAL -----------
+        List<String> sortedTanggal = new ArrayList<>(map.keySet());
+        Collections.sort(sortedTanggal); // ascending (kecil ke besar)
+        // ---------------------------------------
 
-        for (String keyTanggal : map.keySet()) {
-            double[] d = map.get(keyTanggal);
-
+        // masukkan ke table dengan tanggal terurut
+        for (String tanggal : sortedTanggal) {
+            double[] d = map.get(tanggal);
             modelBulanan.addRow(new Object[]{
-                keyTanggal,
+                tanggal,
                 d[0],
                 d[1],
                 d[2],
                 d[3]
-            });
+        });
         }
 
         JOptionPane.showMessageDialog(this, "Data berhasil dikonversi ke bulanan!");
